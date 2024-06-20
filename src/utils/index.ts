@@ -11,3 +11,26 @@ export function getCurrentDateInUTCPlus3() {
 
   return nowInUtcPlus3;
 }
+
+export function getExpiryTime() {
+  const dateInUTCPlus3 = getCurrentDateInUTCPlus3();
+  return dateInUTCPlus3.getHours() < 10
+    ? new Date(
+        dateInUTCPlus3.getFullYear(),
+        dateInUTCPlus3.getMonth(),
+        dateInUTCPlus3.getDate(),
+        10,
+        0,
+        0,
+        0
+      )
+    : new Date(
+        dateInUTCPlus3.getFullYear(),
+        dateInUTCPlus3.getMonth(),
+        dateInUTCPlus3.getDate(),
+        23,
+        59,
+        59,
+        999
+      );
+}

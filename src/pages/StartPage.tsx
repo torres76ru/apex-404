@@ -4,37 +4,19 @@ import swipe_app from "../assets/img/icons/swipe-up.svg";
 import { Link } from "react-router-dom";
 import Button from "../modules/Button/Button";
 import { useEffect, useState } from "react";
-import { getCurrentDateInUTCPlus3 } from "../utils";
+import { getExpiryTime } from "../utils";
 import Timer from "../modules/Timer/Timer";
 
 const StartPage = () => {
   const [expiryTime, setExpiryTime] = useState<Date>(
     () => new Date(Date.now())
   );
+
   useEffect(() => {
-    const dateInUTCPlus3 = getCurrentDateInUTCPlus3();
-    const time =
-      dateInUTCPlus3.getHours() < 10
-        ? new Date(
-            dateInUTCPlus3.getFullYear(),
-            dateInUTCPlus3.getMonth(),
-            dateInUTCPlus3.getDate(),
-            10,
-            0,
-            0,
-            0
-          )
-        : new Date(
-            dateInUTCPlus3.getFullYear(),
-            dateInUTCPlus3.getMonth(),
-            dateInUTCPlus3.getDate(),
-            23,
-            59,
-            59,
-            999
-          );
+    const time = getExpiryTime();
 
     setExpiryTime(time);
+    // console.log("height:", window.Telegram.WebView.receiveEvent("event_name"));
     console.log("Set time", time);
   }, []);
 
