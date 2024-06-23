@@ -1,0 +1,64 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 5px;
+  &_content {
+    padding: 14px 0 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 15px;
+    .label {
+      font-weight: 700;
+      font-size: 8px;
+      text-transform: uppercase;
+      color: #7c7c7c;
+      margin-bottom: 2px;
+    }
+    .text {
+      font-family: "Inter", sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      color: #000;
+    }
+    .showMoreButton {
+      font-weight: 600;
+      font-size: 10px;
+      color: #3d87f6;
+      margin-top: -10px;
+    }
+  }
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  &_left {
+    width: 29px;
+    height: 29px;
+    border-radius: 29px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &_right {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: space-between;
+    .uid,
+    .date {
+      font-weight: 700;
+      font-size: 8px;
+      color: #7c7c7c;
+    }
+    .username {
+      font-weight: 700;
+      font-size: 10px;
+      color: #3d87f6;
+    }
+  }
+}

@@ -3,22 +3,35 @@ import css from "./StartPage.module.scss";
 import swipe_app from "../assets/img/icons/swipe-up.svg";
 import { Link } from "react-router-dom";
 import Button from "../modules/Button/Button";
-import { useEffect, useState } from "react";
-import { getExpiryTime } from "../utils";
-import Timer from "../modules/Timer/Timer";
+import AutoTimer from "../modules/Timer/AutoTimer";
+import { useEffect } from "react";
+import { retrieveLaunchParams } from "@tma.js/sdk-react";
+import { fetchToken } from "../sevices";
+import Cookies from "js-cookie";
 
 const StartPage = () => {
-  const [expiryTime, setExpiryTime] = useState<Date>(
-    () => new Date(Date.now())
-  );
+  const { initData } = retrieveLaunchParams();
 
   useEffect(() => {
-    const time = getExpiryTime();
+    const getToken = async () => {
+      try {
+        if (initData) {
+          const data = await fetchToken(initData);
+          const token = data.body;
 
-    setExpiryTime(time);
-    // console.log("height:", window.Telegram.WebView.receiveEvent("event_name"));
-    console.log("Set time", time);
-  }, []);
+          // Сохранение токена в куки
+          Cookies.set("token", token, { expires: 7 });
+        }
+      } catch (error) {
+        alert(
+          (error as Error).message ||
+            "Failed to fetch token. Please try again later."
+        );
+      }
+    };
+
+    getToken();
+  }, [initData]);
 
   return (
     <div className={css.wrapper}>
@@ -28,7 +41,7 @@ const StartPage = () => {
           <div className={css.time}>
             <div className={css.time_title}>форма отчета закроется через</div>
             <div className={css.time_clock}>
-              <Timer expiryTimestamp={expiryTime} />
+              <AutoTimer />
             </div>
           </div>
           <div className={css.swipe}>
