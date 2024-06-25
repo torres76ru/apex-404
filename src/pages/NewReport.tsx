@@ -191,7 +191,7 @@ const NewReport = () => {
         </span>
       </div>
 
-      {timeExpired && (
+      {!timeExpired && (
         <form className={css.formBody} onSubmit={handleSubmit} noValidate>
           {currentQuestion === 0 && (
             <div className={css.formItem}>
