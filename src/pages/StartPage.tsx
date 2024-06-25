@@ -4,14 +4,17 @@ import swipe_app from "../assets/img/icons/swipe-up.svg";
 import { Link } from "react-router-dom";
 import Button from "../modules/Button/Button";
 import AutoTimer from "../modules/Timer/AutoTimer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { retrieveLaunchParams } from "@tma.js/sdk-react";
 import { fetchToken } from "../sevices";
 import Cookies from "js-cookie";
 
 const StartPage = () => {
   const { initData } = retrieveLaunchParams();
-
+  const [timeExpired, setTimeExpired] = useState(false);
+  const handleExpired = (flag: boolean) => {
+    setTimeExpired(flag);
+  };
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -39,9 +42,13 @@ const StartPage = () => {
         <div className={css.body_content}>
           <div className={css.header}>вершина 404</div>
           <div className={css.time}>
-            <div className={css.time_title}>форма отчета закроется через</div>
+            {timeExpired ? (
+              <h1 className={`${css.time_title}`}>Форма откроется через: </h1>
+            ) : (
+              <h1 className={`${css.time_title}`}>Форма закроется через: </h1>
+            )}
             <div className={css.time_clock}>
-              <AutoTimer />
+              <AutoTimer onExpire={handleExpired} />
             </div>
           </div>
           <div className={css.swipe}>

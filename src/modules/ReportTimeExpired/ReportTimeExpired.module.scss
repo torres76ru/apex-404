@@ -35,18 +35,25 @@
   letter-spacing: -0.02em;
   color: #000;
 }
-
-.slogan {
-  font-weight: 700;
-  font-size: 6vw;
-  line-height: 120%;
+.title {
+  font-weight: 800;
+  font-size: 10vw;
+  line-height: 100%;
   text-align: center;
   color: #fff;
-  text-transform: uppercase;
 }
-.brand {
-  font-weight: 700;
+.info {
+  font-weight: 300;
   font-size: 3vw;
+  letter-spacing: 0.2px;
+  line-height: 150%;
+  text-align: center;
+  color: #fff;
+  margin-bottom: -10px;
+}
+.timer {
+  font-weight: 500;
+  font-size: 10vw;
   line-height: 100%;
   text-align: center;
   color: #fff;

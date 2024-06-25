@@ -13,10 +13,12 @@ interface BodyItemReports {
   _id: string;
   id: number;
   ownerUuid: string;
+  userId: number;
   ownerUsername: string;
   questions: Question[];
   date: string;
   isClosed: boolean;
+  photoName: string;
   __v: number;
 }
 

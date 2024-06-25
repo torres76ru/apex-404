@@ -1,5 +1,6 @@
 import css from "./UserReport.module.scss";
 import placeholder from "../../assets/img/avatar-empty.png";
+import { dateTransform } from "@/utils";
 
 interface UserReportProps {
   showMore: boolean;
@@ -23,10 +24,12 @@ const UserReport = ({
           </div>
           <div className={css.header_right}>
             <div className={css.header_info}>
-              <div className={css.uid}>UID: {reportData.ownerUuid}</div>
+              <div className={css.uid}>UID: {reportData.userId}</div>
               <div className={css.username}>{reportData.ownerUsername}</div>
             </div>
-            {showDate && <div className={css.date}>{reportData.date}</div>}
+            {showDate && (
+              <div className={css.date}>{dateTransform(reportData.date)}</div>
+            )}
           </div>
         </div>
         <div className={css.body_content}>
@@ -51,6 +54,14 @@ const UserReport = ({
               Показать еще
             </div>
           )}
+          <div className={css.img}>
+            {reportData.photoName && (
+              <img
+                src={`${import.meta.env.VITE_MEDIA}/${reportData.photoName}`}
+                alt=""
+              />
+            )}
+          </div>
         </div>
       </div>
     </>

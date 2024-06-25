@@ -6,7 +6,7 @@ const ReportSent = () => {
     <div className={css.wrapper}>
       <div className={css.body}>
         <div className={css.slogan}>
-          ЕЩЕ ОДИН ШАГ К ПОБЕДЕ, ОТЧЁТ УСПЕШНО ОТПРАВЛЕН!
+          ЕЩЕ ОДИН ШАГ К ПОБЕДЕ, <br /> ОТЧЁТ УСПЕШНО ОТПРАВЛЕН!
         </div>
         <div className={css.brand}>ВЕРШИНА 404</div>
       </div>

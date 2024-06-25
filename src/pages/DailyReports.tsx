@@ -4,37 +4,53 @@ import UserReport from "../modules/UserReport/UserReport";
 import css from "./DailyReports.module.scss";
 // import { Report } from "../types";
 import * as axios from "../api/axios/requests";
+import DayPicker from "@/modules/DayPicker/DayPicker";
 
 const DailyReports = () => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [reports, setReports] = useState<BodyItemReports[]>([]);
-  const [currentDay, setCurrentDay] = useState<string>("");
+  const [currentDay, setCurrentDay] = useState<string | null>(null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   const handleShowMore = (index: number) => {
     setExpandedItem(expandedItem === index ? null : index);
   };
 
+  const getCurrentDay = async () => {
+    try {
+      const dayData = await axios.getDay();
+      setCurrentDay(dayData.data.body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getReportsByDay = async (day: string) => {
+    try {
+      const reportsData = await axios.getReportsByDay({
+        params: { day: day }
+      });
+      setReports(reportsData.data.body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetch = async () => {
-      const getDay = await Promise.all([axios.getDay()]);
-      const [day] = getDay;
-      const dayData = day.data.body;
-
-      const getReportsByDay = await Promise.all([
-        axios.getReportsByDay({ params: { day: dayData } })
-      ]);
-
-      const [reports] = getReportsByDay;
-      const reportsData = reports.data.body;
-
-      setReports(reportsData);
-      setCurrentDay(dayData);
-
-      console.log(reports, day);
-    };
-
-    fetch();
+    getCurrentDay();
   }, []);
+
+  useEffect(() => {
+    if (currentDay) {
+      setSelectedDay(parseInt(currentDay, 10)); // Initialize selectedDay with currentDay
+      getReportsByDay(currentDay);
+    }
+  }, [currentDay]);
+
+  const handleDaySelect = (day: number) => {
+    setSelectedDay(day);
+    getReportsByDay(day.toString());
+  };
 
   return (
     <div>
@@ -42,7 +58,7 @@ const DailyReports = () => {
         <div className={css.heading}>
           <h1 className={`${css.title}`}>Отчеты других участников</h1>
           <span className={css.marker}>
-            День <span className="underline">{currentDay}</span> из 30
+            <DayPicker currentDay={selectedDay} onDaySelect={handleDaySelect} />
           </span>
         </div>
         <div className={css.reports}>

@@ -4,24 +4,21 @@ import css from "./NewReport.module.scss";
 import * as axios from "../api/axios/requests";
 import Cookies from "js-cookie";
 import ReportSent from "@/modules/ReportSent/ReportSent";
+import ReportTimeExpired from "@/modules/ReportTimeExpired/ReportTimeExpired";
 
 interface FormData {
   question1: string;
   question2: string;
   question3: string;
+  photo?: File;
 }
-
-const questions = [
-  { id: 0, body: "Что было сделано сегодня?" },
-  { id: 1, body: "Что я буду делать завтра?" },
-  { id: 2, body: "Что я могу улучшить?" }
-];
 
 const NewReport = () => {
   const [timeExpired, setTimeExpired] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [sent, setSent] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<string | null>("");
   const [formData, setFormData] = useState<FormData>({
     question1: "",
     question2: "",
@@ -71,6 +68,45 @@ const NewReport = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    const maxSizeMB = 30; // Максимальный размер файла в мегабайтах
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+    if (file) {
+      if (file.size <= maxSizeBytes && file.type.startsWith("image/")) {
+        setSelectedFile(URL.createObjectURL(file));
+        setErrors((prevErrors) => ({ ...prevErrors, question4: "" }));
+      } else {
+        setSelectedFile(null);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          question4:
+            "Размер файла не должен превышать 30 МБ и должен быть изображением."
+        }));
+        event.target.value = ""; // Сбросить выбранный файл
+      }
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, question4: "" })); // Очистить ошибку, если файл не выбран
+    }
+
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        photo: file
+      }));
+    }
+  };
+
+  const handleRemoveFile = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setSelectedFile(null);
+    setFormData((prevData) => ({
+      ...prevData,
+      photo: undefined
+    }));
+  };
 
   const handleNext = () => {
     setCurrentQuestion((prev) => prev + 1);
@@ -80,7 +116,7 @@ const NewReport = () => {
     setCurrentQuestion((prev) => prev - 1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
 
@@ -104,39 +140,41 @@ const NewReport = () => {
 
     console.log(formData);
 
-    const questionsPayload = [
-      { id: 0, body: questions[0].body, answer: formData.question1 },
-      { id: 1, body: questions[1].body, answer: formData.question2 },
-      { id: 2, body: questions[2].body, answer: formData.question3 }
-    ];
+    const formDataToSend = new FormData();
+    formDataToSend.append("question1", formData.question1);
+    formDataToSend.append("question2", formData.question2);
+    formDataToSend.append("question3", formData.question3);
+    if (formData.photo) {
+      formDataToSend.append("photo", formData.photo);
+    }
 
-    const payload = { questions: questionsPayload };
-
-    const sendReport = async () => {
-      const postUserReport = await Promise.all([
-        axios.postUserReport({
-          params: payload,
-          config: {
-            headers: {
-              Authorization: `${token}`
-            }
+    try {
+      const response = await axios.postUserReport({
+        params: formDataToSend,
+        config: {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data"
           }
-        })
-      ]);
-      console.log(postUserReport);
-      const [report] = postUserReport;
-      const status = report.data.status;
+        }
+      });
+      const status = response.data.status;
       if (status === "Success") {
         setSent(true);
       }
-    };
-    if (token) {
-      sendReport();
-    } else {
-      alert("Необходимо авторизоваться");
+    } catch (error) {
+      console.error("Error submitting report:", error);
     }
+
     setErrors({});
   };
+
+  if (timeExpired)
+    return (
+      <ReportTimeExpired>
+        <AutoTimer onExpire={handleExpired} />
+      </ReportTimeExpired>
+    );
 
   if (sent) return <ReportSent />;
 
@@ -153,7 +191,7 @@ const NewReport = () => {
         </span>
       </div>
 
-      {!timeExpired && (
+      {timeExpired && (
         <form className={css.formBody} onSubmit={handleSubmit} noValidate>
           {currentQuestion === 0 && (
             <div className={css.formItem}>
@@ -218,6 +256,48 @@ const NewReport = () => {
               </div>
             </div>
           )}
+          {currentQuestion === 3 && (
+            <div className={css.formItem}>
+              <div className={css.formItem_label}>
+                <label>Прикрепить фото, по желанию</label>
+              </div>
+              <div className={`${css.formItem_input} ${css.formtItem_photo}`}>
+                <label className={css.fileInputLabel}>
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  {selectedFile && (
+                    <div className={css.form_img}>
+                      <img
+                        src={selectedFile}
+                        alt="Selected"
+                        className={css.previewImage}
+                      />
+                    </div>
+                  )}
+                  <div className={css.fileInputPlaceholder}>
+                    <span className={css.plus}>+</span>
+                    <span className={css.add_photo}>ДОБАВИТЬ ФОТО</span>
+                  </div>
+                </label>
+                {selectedFile && (
+                  <button
+                    type="button"
+                    className={`${css.removeButton} ${css.button} ${css.black}`}
+                    onClick={handleRemoveFile}
+                  >
+                    Удалить
+                  </button>
+                )}
+                {errors.question4 && (
+                  <div className={css.error}>{errors.question4}</div>
+                )}
+              </div>
+            </div>
+          )}
           <div className={css.buttons}>
             {currentQuestion > 0 && (
               <button
@@ -228,7 +308,7 @@ const NewReport = () => {
                 Назад
               </button>
             )}
-            {currentQuestion < 2 ? (
+            {currentQuestion < 3 ? (
               <button
                 className={`${css.button} ${css.black}`}
                 type="button"

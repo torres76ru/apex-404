@@ -18,6 +18,9 @@ body {
   padding: 0;
   margin: 0;
 }
+button {
+  font-family: inherit;
+}
 
 .underline {
   text-decoration: underline;

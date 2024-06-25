@@ -35,7 +35,16 @@ const UserProfile = () => {
       ]);
 
       const [reports] = getReportsResponses;
-      const reportsData = reports.data.body;
+      let reportsData = reports.data.body;
+
+      // Преобразование и сортировка отчетов по дате
+      reportsData = reportsData
+        .map((report) => ({
+          ...report,
+          // Преобразование строки даты в объект Date
+          dateObj: new Date(report.date)
+        }))
+        .sort((a, b) => b.dateObj.getTime() - a.dateObj.getTime());
 
       setReports(reportsData);
 

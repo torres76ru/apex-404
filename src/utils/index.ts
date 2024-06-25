@@ -40,3 +40,14 @@ export function getExpiryTime(): [boolean, Date] {
         )
       ];
 }
+
+export const dateTransform = (date: string): string => {
+  const dateObj = new Date(date);
+
+  // Форматирование даты в нужный формат
+  return dateObj.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+};
