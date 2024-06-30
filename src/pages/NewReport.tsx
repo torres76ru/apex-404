@@ -169,14 +169,14 @@ const NewReport = () => {
     setErrors({});
   };
 
-  if (timeExpired)
-    return (
-      <ReportTimeExpired>
-        <AutoTimer onExpire={handleExpired} />
-      </ReportTimeExpired>
-    );
+  // if (timeExpired)
+  //   return (
+  //     <ReportTimeExpired>
+  //       <AutoTimer onExpire={handleExpired} />
+  //     </ReportTimeExpired>
+  //   );
 
-  if (sent) return <ReportSent />;
+  // if (sent) return <ReportSent />;
 
   return (
     <div className={css.wrapper}>
@@ -191,7 +191,7 @@ const NewReport = () => {
         </span>
       </div>
 
-      {!timeExpired && (
+      {timeExpired && (
         <form className={css.formBody} onSubmit={handleSubmit} noValidate>
           {currentQuestion === 0 && (
             <div className={css.formItem}>
