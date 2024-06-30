@@ -169,14 +169,14 @@ const NewReport = () => {
     setErrors({});
   };
 
-  // if (timeExpired)
-  //   return (
-  //     <ReportTimeExpired>
-  //       <AutoTimer onExpire={handleExpired} />
-  //     </ReportTimeExpired>
-  //   );
+  if (timeExpired)
+    return (
+      <ReportTimeExpired>
+        <AutoTimer onExpire={handleExpired} />
+      </ReportTimeExpired>
+    );
 
-  // if (sent) return <ReportSent />;
+  if (sent) return <ReportSent />;
 
   return (
     <div className={css.wrapper}>
