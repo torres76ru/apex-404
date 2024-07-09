@@ -18,7 +18,7 @@ interface BodyItemReports {
   questions: Question[];
   date: string;
   isClosed: boolean;
-  photoName: string;
+  photoUrl: string;
   __v: number;
 }
 
@@ -35,6 +35,27 @@ interface ApiDay {
   body: string;
 }
 
+interface ApiPostFile {
+  status: string;
+  message: string;
+  publicUrl: string;
+}
+
+interface ApiToken {
+  status: string;
+  message: string;
+  body: string;
+}
+
+interface ApiStatus {
+  status: string;
+  message: string;
+  body: string;
+}
+
 type ApiReportsResponse = ApiReports;
 type ApiDayResponse = ApiDay;
 type ApiReportResponse = ApiReport;
+type ApiPostFileResponse = ApiPostFile;
+type ApiTokenResponse = ApiToken;
+type ApiStatusResponse = ApiStatus;

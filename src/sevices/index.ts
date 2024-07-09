@@ -1,26 +1,18 @@
 import axios from "axios";
-import { ApiResponse, ApiResponseToken } from "../types";
-import { InitDataParsed } from "@tma.js/sdk-react";
+import { ApiResponseToken } from "../types";
 
 const API_URL = import.meta.env.VITE_URL; // замените на ваш API endpoint
 
-export const fetchReports = async (day: string): Promise<ApiResponse> => {
-  const response = await axios.get<ApiResponse>(`${API_URL}/reports/${day}`);
-  return response.data;
-};
-
-export const getDay = async (): Promise<ApiResponse> => {
-  const response = await axios.get<ApiResponse>(`${API_URL}/days/current`);
-  return response.data;
-};
-
 export const fetchToken = async (
-  initData: InitDataParsed
+  initData: string
 ): Promise<ApiResponseToken> => {
   try {
     const response = await axios.post<ApiResponseToken>(
-      `${API_URL}/auth`,
-      initData
+      `${API_URL}/auth`, // /auth
+      {},
+      {
+        headers: { Authorization: initData }
+      }
     );
 
     // Проверяем успешность ответа
@@ -39,9 +31,3 @@ export const fetchToken = async (
     }
   }
 };
-
-//     alert("here");
-// const { token } = response.data;
-
-// // Сохраняем токен в куки на 7 дней
-// Cookies.set("token", token, { expires: 7 });

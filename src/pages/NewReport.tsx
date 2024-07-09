@@ -68,6 +68,7 @@ const NewReport = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -144,22 +145,28 @@ const NewReport = () => {
     formDataToSend.append("question1", formData.question1);
     formDataToSend.append("question2", formData.question2);
     formDataToSend.append("question3", formData.question3);
-    if (formData.photo) {
-      formDataToSend.append("photo", formData.photo);
-    }
 
     try {
       const response = await axios.postUserReport({
-        params: formDataToSend,
+        params: {
+          question1: formData.question1,
+          question2: formData.question2,
+          question3: formData.question3
+        },
         config: {
           headers: {
             Authorization: token,
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "application/json"
           }
         }
       });
       const status = response.data.status;
+      console.log(response);
+
       if (status === "Success") {
+        if (formData.photo) {
+          sendImage(response.data.body);
+        }
         setSent(true);
       }
     } catch (error) {
@@ -167,6 +174,27 @@ const NewReport = () => {
     }
 
     setErrors({});
+  };
+
+  const sendImage = async (reportId: string) => {
+    try {
+      const formDataToSend = new FormData();
+      if (formData.photo) {
+        formDataToSend.append("photo", formData.photo);
+      }
+      const response = await axios.postFile({
+        params: { reportId: reportId, formData: formDataToSend },
+        config: {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
   if (timeExpired)
@@ -191,7 +219,7 @@ const NewReport = () => {
         </span>
       </div>
 
-      {timeExpired && (
+      {!timeExpired && (
         <form className={css.formBody} onSubmit={handleSubmit} noValidate>
           {currentQuestion === 0 && (
             <div className={css.formItem}>

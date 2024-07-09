@@ -55,11 +55,8 @@ const UserReport = ({
             </div>
           )}
           <div className={css.img}>
-            {reportData.photoName && (
-              <img
-                src={`${import.meta.env.VITE_MEDIA}/${reportData.photoName}`}
-                alt=""
-              />
+            {reportData.photoUrl && (
+              <img src={`${reportData.photoUrl}`} alt="" />
             )}
           </div>
         </div>

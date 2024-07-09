@@ -4,37 +4,13 @@ import swipe_app from "../assets/img/icons/swipe-up.svg";
 import { Link } from "react-router-dom";
 import Button from "../modules/Button/Button";
 import AutoTimer from "../modules/Timer/AutoTimer";
-import { useEffect, useState } from "react";
-import { retrieveLaunchParams } from "@tma.js/sdk-react";
-import { fetchToken } from "../sevices";
-import Cookies from "js-cookie";
+import { useState } from "react";
 
 const StartPage = () => {
-  const { initData } = retrieveLaunchParams();
   const [timeExpired, setTimeExpired] = useState(false);
   const handleExpired = (flag: boolean) => {
     setTimeExpired(flag);
   };
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        if (initData) {
-          const data = await fetchToken(initData);
-          const token = data.body;
-
-          // Сохранение токена в куки
-          Cookies.set("token", token, { expires: 7 });
-        }
-      } catch (error) {
-        alert(
-          (error as Error).message ||
-            "Failed to fetch token. Please try again later."
-        );
-      }
-    };
-
-    getToken();
-  }, [initData]);
 
   return (
     <div className={css.wrapper}>
