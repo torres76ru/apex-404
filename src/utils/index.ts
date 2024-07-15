@@ -1,44 +1,42 @@
-export function getCurrentDateInUTCPlus3() {
-  // Get the current date and time in UTC
-  const now = new Date();
-
-  // Get the current UTC time in milliseconds since the epoch
-  const nowUtc = now.getTime() + now.getTimezoneOffset() * 60000;
-
-  // Create a new date object for UTC+3
-  const offset = 3; // UTC+3
-  const nowInUtcPlus3 = new Date(nowUtc + 3600000 * offset);
-
-  return nowInUtcPlus3;
-}
-
 export function getExpiryTime(): [boolean, Date] {
-  const dateInUTCPlus3 = getCurrentDateInUTCPlus3();
-  return dateInUTCPlus3.getHours() < 10
-    ? [
-        true,
-        new Date(
-          dateInUTCPlus3.getFullYear(),
-          dateInUTCPlus3.getMonth(),
-          dateInUTCPlus3.getDate(),
-          10,
+  const now = new Date();
+  const utcHours = now.getUTCHours();
+
+  if (utcHours >= 19 || utcHours < 7) {
+    // Если текущее время с 19:00 сегодняшнего дня до 7:00 завтрашнего дня
+    const expiryDate = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        7,
+        0,
+        0,
+        0
+      )
+    );
+    if (utcHours >= 19) {
+      // Если сейчас время после 19:00, установить на 7:00 завтрашнего дня
+      expiryDate.setUTCDate(expiryDate.getUTCDate() + 1);
+    }
+    return [true, expiryDate];
+  } else {
+    // Если текущее время с 7:00 до 19:00
+    return [
+      false,
+      new Date(
+        Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate(),
+          19,
           0,
           0,
           0
         )
-      ]
-    : [
-        false,
-        new Date(
-          dateInUTCPlus3.getFullYear(),
-          dateInUTCPlus3.getMonth(),
-          dateInUTCPlus3.getDate(),
-          23,
-          59,
-          59,
-          999
-        )
-      ];
+      )
+    ];
+  }
 }
 
 export const dateTransform = (date: string): string => {

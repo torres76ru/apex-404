@@ -5,9 +5,14 @@ import new_report_icon from "../../assets/img/icons/new-report.svg";
 import new_report_active_icon from "../../assets/img/icons/new-report-active.svg";
 import user_profile_icon from "../../assets/img/icons/user-profile.svg";
 import user_profile_active_icon from "../../assets/img/icons/user-profile-active.svg";
+import admin_icon from "@/assets/img/icons/admin.svg";
+import admin_active_icon from "@/assets/img/icons/admin-active.svg";
 import css from "./Navbar.module.scss";
+import { useSelector } from "react-redux";
+import { selectStatus } from "@/store/selectors";
 
 const Navbar = () => {
+  const status = useSelector(selectStatus);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -52,7 +57,11 @@ const Navbar = () => {
             </div>
           </Link>
         </div>
-        <div className={`${css.column} ${css.right}`}>
+        <div
+          className={`${css.column} ${
+            status === "admin" ? css.center : css.right
+          }`}
+        >
           <Link to="/user-profile">
             <div
               className={`${css.item} ${
@@ -71,6 +80,25 @@ const Navbar = () => {
             </div>
           </Link>
         </div>
+        {status === "admin" && (
+          <div className={`${css.column} ${css.right}`}>
+            <Link to="/admin">
+              <div
+                className={`${css.item} ${
+                  currentPath === "/admin" ? css.active : ""
+                }`}
+              >
+                <img
+                  src={
+                    currentPath === "/admin" ? admin_active_icon : admin_icon
+                  }
+                  alt="управление"
+                />
+                <span>управление</span>
+              </div>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

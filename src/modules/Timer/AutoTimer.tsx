@@ -13,6 +13,7 @@ const AutoTimer = ({ onExpire }: AutoTimerProps) => {
 
   const handleExpired = () => {
     const [flag, time] = getExpiryTime();
+
     setExpiryTime(time);
     if (onExpire) {
       onExpire(flag);

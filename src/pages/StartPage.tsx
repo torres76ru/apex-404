@@ -1,13 +1,20 @@
 import css from "./StartPage.module.scss";
 
 import swipe_app from "../assets/img/icons/swipe-up.svg";
-import { Link } from "react-router-dom";
 import Button from "../modules/Button/Button";
 import AutoTimer from "../modules/Timer/AutoTimer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectStatus } from "@/store/selectors";
 
 const StartPage = () => {
   const [timeExpired, setTimeExpired] = useState(false);
+  const status = useSelector(selectStatus);
+
+  useEffect(() => {
+    console.log("status", status);
+  }, [status]);
+
   const handleExpired = (flag: boolean) => {
     setTimeExpired(flag);
   };
@@ -36,9 +43,13 @@ const StartPage = () => {
         </div>
       </div>
       <div className={css.footer}>
-        <Link to={"/daily-reports"}>
-          <Button>перейти в приложение</Button>
-        </Link>
+        {status && ["admin", "freezed", "member"].includes(status) ? (
+          <Button to={"/daily-reports"}>
+            <span>перейти в приложение</span>
+          </Button>
+        ) : (
+          <Button to={"/access-denied"}>перейти в приложение</Button>
+        )}
       </div>
     </div>
   );

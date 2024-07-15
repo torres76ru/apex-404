@@ -6,3 +6,6 @@ export * from "./user/getReport";
 export * from "./files";
 export * from "./payment/sendMail";
 export * from "./auth/CheckUserStatus";
+export * from "./auth";
+export * from "./admin/getUsers";
+export * from "./admin/actions";

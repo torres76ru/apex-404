@@ -84,7 +84,7 @@ const Compass = () => {
           {loading ? (
             <div className={css.spinner}>
               <Spinner />
-            </div> // Add spinner here
+            </div>
           ) : (
             <button type="button" onClick={sendEmail}>
               Перейти к оплате

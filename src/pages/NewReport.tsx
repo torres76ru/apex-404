@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import AutoTimer from "../modules/Timer/AutoTimer";
 import css from "./NewReport.module.scss";
 import * as axios from "../api/axios/requests";
-import Cookies from "js-cookie";
 import ReportSent from "@/modules/ReportSent/ReportSent";
 import ReportTimeExpired from "@/modules/ReportTimeExpired/ReportTimeExpired";
+import { selectToken } from "@/store/selectors";
+import { useSelector } from "react-redux";
 
 interface FormData {
   question1: string;
@@ -16,7 +17,7 @@ interface FormData {
 const NewReport = () => {
   const [timeExpired, setTimeExpired] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [token, setToken] = useState<string | undefined>(undefined);
+  const token = useSelector(selectToken);
   const [sent, setSent] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>("");
   const [formData, setFormData] = useState<FormData>({
@@ -26,18 +27,6 @@ const NewReport = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        const savedToken = Cookies.get("token");
-        setToken(savedToken);
-      } catch (error) {
-        alert(`Failed to fetch token:${error}`);
-      }
-    };
-    getToken();
-  }, []);
 
   useEffect(() => {
     const getReport = async () => {
@@ -72,7 +61,7 @@ const NewReport = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
-    const maxSizeMB = 30; // Максимальный размер файла в мегабайтах
+    const maxSizeMB = 30;
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
     if (file) {

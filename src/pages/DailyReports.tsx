@@ -19,9 +19,9 @@ const DailyReports = () => {
   const getCurrentDay = async () => {
     try {
       const dayData = await axios.getDay();
-      setCurrentDay(dayData.data.body);
+      setCurrentDay(dayData.data.body || "0");
     } catch (err) {
-      console.log(err);
+      console.log("get current day", err);
     }
   };
 

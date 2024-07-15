@@ -3,24 +3,12 @@ import UserReport from "../modules/UserReport/UserReport";
 import css from "./DailyReports.module.scss";
 import * as axios from "../api/axios/requests";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import { selectToken } from "@/store/selectors";
 
 const UserProfile = () => {
   const [reports, setReports] = useState<BodyItemReports[]>([]);
-  const [token, setToken] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        const savedToken = Cookies.get("token");
-        console.log("token: " + savedToken);
-        setToken(savedToken);
-      } catch (error) {
-        console.error("Failed to fetch token:", error);
-      }
-    };
-    getToken();
-  }, []);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
     const fetch = async () => {

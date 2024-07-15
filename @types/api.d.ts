@@ -53,6 +53,27 @@ interface ApiStatus {
   body: string;
 }
 
+interface User {
+  _id: string;
+  id: number;
+  chatId: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobile: string;
+  isBanned: boolean;
+  __v: number;
+  status: string;
+}
+
+interface ApiUserResponse {
+  status: string;
+  message: string;
+  body: User[];
+}
+
+type ApiUsersResponse = ApiUserResponse;
 type ApiReportsResponse = ApiReports;
 type ApiDayResponse = ApiDay;
 type ApiReportResponse = ApiReport;

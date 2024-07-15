@@ -1,0 +1,50 @@
+.wrapper {
+  background-color: #000;
+  min-height: 100vh;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  min-height: 100vh;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 20px;
+}
+.content {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .title {
+    h1 {
+      font-size: 6.5vw;
+      text-transform: uppercase;
+      padding: 0 0 20px;
+    }
+  }
+  .image {
+    position: relative;
+    width: 180px;
+    img {
+      width: 100%;
+    }
+  }
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    span {
+      font-weight: 700;
+      font-size: 4vw;
+      letter-spacing: 1px;
+    }
+  }
+  .brand {
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
