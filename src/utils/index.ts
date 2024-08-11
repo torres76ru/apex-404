@@ -2,7 +2,7 @@ export function getExpiryTime(): [boolean, Date] {
   const now = new Date();
   const utcHours = now.getUTCHours();
 
-  if (utcHours >= 19 || utcHours < 7) {
+  if (utcHours >= 21 || utcHours < 7) {
     // Если текущее время с 19:00 сегодняшнего дня до 7:00 завтрашнего дня
     const expiryDate = new Date(
       Date.UTC(
@@ -29,7 +29,7 @@ export function getExpiryTime(): [boolean, Date] {
           now.getUTCFullYear(),
           now.getUTCMonth(),
           now.getUTCDate(),
-          19,
+          21,
           0,
           0,
           0

@@ -30,10 +30,13 @@ const DailyReports = () => {
       const reportsData = await axios.getReportsByDay({
         params: { day: day }
       });
-      const sortedReports = reportsData.data.body.sort((a, b) => a.id - b.id);
+      const sortedReports = reportsData.data.body.sort(
+        (a, b) => a.userId - b.userId
+      );
       setReports(sortedReports);
     } catch (err) {
       console.log(err);
+      alert(`Произошла ошибка: ${err}}`);
     }
   };
 

@@ -140,7 +140,7 @@ const AdminPage = () => {
   return (
     <div>
       <div className={css.heading}>
-        <h1 className={`${css.title}`}>Отчеты других участников</h1>
+        <h1 className={`${css.title}`}>Список участников</h1>
       </div>
       <Container>
         <ul className={`${css.list}`}>

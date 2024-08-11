@@ -29,6 +29,7 @@ const App = () => {
         }
       } catch (error) {
         console.error("Failed to fetch token:", error);
+        alert(`Ошибка при загрузке токена: ${error}`);
       }
     };
 
@@ -40,18 +41,17 @@ const App = () => {
 
   useEffect(() => {
     const getUserStatus = async () => {
-      if (!token) return;
       try {
         const response = await axios.postCheckUserStatus({
           config: {
             headers: { Authorization: token }
           }
         });
-        if (response.status == 200) {
-          dispatch(setStatus(response.data.body));
-        }
+
+        dispatch(setStatus(response.data.body));
       } catch (error) {
         console.error("Failed to check user status:", error);
+        alert(`Ошибка при загрузке статуса: ${error}`);
       }
     };
 
