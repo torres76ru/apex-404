@@ -9,6 +9,15 @@ interface ApiReport {
   body: BodyItemReports;
 }
 
+interface ApiReportsByPage {
+  status: string;
+  message: string;
+  body: {
+    hasMoreReports: boolean;
+    reports: BodyItemReports[];
+  };
+}
+
 interface BodyItemReports {
   _id: string;
   id: number;
@@ -75,6 +84,7 @@ interface ApiUserResponse {
 
 type ApiUsersResponse = ApiUserResponse;
 type ApiReportsResponse = ApiReports;
+type ApiReportsByPageResponse = ApiReportsByPage;
 type ApiDayResponse = ApiDay;
 type ApiReportResponse = ApiReport;
 type ApiPostFileResponse = ApiPostFile;

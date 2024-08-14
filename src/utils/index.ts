@@ -42,10 +42,20 @@ export function getExpiryTime(): [boolean, Date] {
 export const dateTransform = (date: string): string => {
   const dateObj = new Date(date);
 
-  // Форматирование даты в нужный формат
-  return dateObj.toLocaleDateString("en-GB", {
+  // Форматирование даты
+  const formattedDate = dateObj.toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric"
   });
+
+  // Форматирование времени (часы и минуты)
+  const formattedTime = dateObj.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false // 24-часовой формат
+  });
+
+  // Возвращаем дату и время в одном формате
+  return `${formattedTime} ${formattedDate}`;
 };

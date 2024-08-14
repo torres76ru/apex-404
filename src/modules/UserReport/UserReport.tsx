@@ -1,6 +1,8 @@
 import css from "./UserReport.module.scss";
 import placeholder from "../../assets/img/avatar-empty.png";
 import { dateTransform } from "@/utils";
+import { useState } from "react";
+import { Spinner } from "@telegram-apps/telegram-ui";
 
 interface UserReportProps {
   showMore: boolean;
@@ -15,6 +17,12 @@ const UserReport = ({
   showDate = false,
   reportData
 }: UserReportProps) => {
+  const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки
+
+  const handleImageLoad = () => {
+    setLoading(false); // Изменяем состояние при завершении загрузки
+  };
+
   return (
     <>
       <div className={css.body}>
@@ -54,9 +62,21 @@ const UserReport = ({
               Показать еще
             </div>
           )}
+
           <div className={css.img}>
             {reportData.photoUrl && (
-              <img src={`${reportData.photoUrl}`} alt="" />
+              <>
+                <div style={{ textAlign: "center" }}>
+                  {loading && <Spinner size="m" />}
+                </div>
+                <img
+                  src={`${reportData.photoUrl}`}
+                  alt=""
+                  onLoad={handleImageLoad} // Вызываем функцию при успешной загрузке
+                  onError={handleImageLoad} // Вызываем ту же функцию, если возникла ошибка (например, изображение не загрузилось)
+                  style={{ display: loading ? "none" : "block" }} // Скрываем изображение, пока оно загружается
+                />
+              </>
             )}
           </div>
         </div>

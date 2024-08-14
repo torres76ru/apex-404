@@ -9,3 +9,4 @@ export * from "./auth/CheckUserStatus";
 export * from "./auth";
 export * from "./admin/getUsers";
 export * from "./admin/actions";
+export * from "./reports/getReportsByPage";

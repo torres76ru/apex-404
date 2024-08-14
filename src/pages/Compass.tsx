@@ -72,6 +72,22 @@ const Compass = () => {
           >
             x
           </div>
+          <script
+            id="5689ddbae6e4de05fc7b28ebaf72cffd2fbac376"
+            src="https://404brand.pro/pl/lite/widget/script?id=1244067"
+          ></script>
+        </div>
+      </div>
+    );
+    return (
+      <div className={css.popup}>
+        <div className={css.popup_body}>
+          <div
+            className={css.close_icon}
+            onClick={() => setPopupVisible(false)}
+          >
+            x
+          </div>
           <div className={css.input}>
             <label className={css.label}>Введите Email</label>
             <input

@@ -5,6 +5,7 @@ import { Outlet, ScrollRestoration } from "react-router-dom";
 import { setInitData, setStatus, setToken } from "./store/toolkitSlice";
 import * as axios from "./api/axios/requests";
 import { selectInitData, selectToken } from "./store/selectors";
+import DevOverlay from "./modules/DevOverlay/DevOverlay";
 
 const App = () => {
   const { initData, initDataRaw } = retrieveLaunchParams();
@@ -62,6 +63,7 @@ const App = () => {
 
   return (
     <>
+      {import.meta.env.VITE_DEV && <DevOverlay />}
       <Outlet />
       <ScrollRestoration />
     </>

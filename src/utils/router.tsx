@@ -8,6 +8,7 @@ import StartPage from "@/pages/StartPage";
 import AdminPage from "@/pages/AdminPage";
 import Compass from "@/pages/Compass";
 import AccessDenied from "@/pages/AccessDenied";
+import DailyReportsTEMP from "@/pages/DailyReportsTEMP";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           { path: "/daily-reports", element: <DailyReports /> },
+          { path: "/daily-reports-2", element: <DailyReportsTEMP /> },
           { path: "/new-report", element: <NewReport /> },
           { path: "/user-profile", element: <UserProfile /> },
           { path: "/admin", element: <AdminPage /> }
