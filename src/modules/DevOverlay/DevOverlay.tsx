@@ -49,9 +49,6 @@ const DevOverlay = () => {
           <p>
             <Link to="/admin">/admin</Link>
           </p>
-          <p>
-            <Link to="/daily-reports-2">/daily-reports-2</Link>
-          </p>
         </div>
       )}
     </div>
